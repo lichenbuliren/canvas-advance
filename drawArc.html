@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>绘制曲线</title>
+    <style>
+    #my-canvas{
+        margin: 50px auto 0;
+        display: block;
+        border:1px solid #ccc;
+    }
+    </style>
+</head>
+<body>
+    <canvas id="my-canvas" class="my-canvas">
+        您的浏览器不支持canvas，请升级您的浏览器
+    </canvas>
+    <script>
+    window.onload = function(){
+        var canvas = document.getElementById('my-canvas'),
+            ctx = canvas.getContext('2d');
+        canvas.width = 800;
+        canvas.height = 800;
+
+        canvas.fillStyle = 'black';
+        ctx.beginPath();
+        ctx.arc(100, 100, 20, 0, Math.PI/2, false);
+        ctx.stroke();
+
+    }
+    </script>
+</body>
+</html>

@@ -6,13 +6,23 @@ window.onload = function() {
     // canvas 不要在css中设置宽高，得到的结果会与实际的不一致
     canvas.width = 1024;
     canvas.height = 768;
-    context.fillStyle = 'black';
+    // context.fillStyle = 'black';
+    // 线性渐变
+    // var skyStyle = context.createLinearGradient(0,0, 0, canvas.height);
+
+    // 径向渐变
+    var skyStyle = context.createRadialGradient(canvas.width / 2,canvas.height,0,canvas.width / 2,canvas.height,canvas.height);
+
+    skyStyle.addColorStop(0.0,'#035');
+    skyStyle.addColorStop(1.0,'black');
+    context.fillStyle = skyStyle;
+
     context.fillRect(0, 0, canvas.width, canvas.height);
     for (var i = 0; i < 200; i++) {
         var starObj = {};
-        starObj.r = Math.random() * 10 + 10;
+        starObj.r = Math.random() * 5 + 5;
         starObj.x = Math.random() * canvas.width;
-        starObj.y = Math.random() * canvas.height;
+        starObj.y = Math.random() * canvas.height*0.65;
         starObj.a = Math.random() * 360;
         // 界定绘制的星星在画布内部
         if ((starObj.x - starObj.r) > 0 && (starObj.y - starObj.r) > 0 && (starObj.x + starObj.r) < canvas.width && (starObj.y + starObj.r) < canvas.height) {
