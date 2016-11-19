@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>gravity ball motion</title>
+</head>
+<body>
+  <canvas id="canvas" width="500" height="500" style="background-color: #ccc"></canvas>
+  <script src="./util/util.js"></script>
+  <script src="./util/ball.js"></script>
+<script>
+  window.onload = function() {
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    var centerX = canvas.width / 2;
+    var centerY = canvas.height / 2;
+
+    var ball = new Ball(20, 'red');
+    ball.x = canvas.width/2;
+    ball.y = canvas.height/2 - 200;
+
+    var vy = 0;
+    var gravity = 0.98;  //重力加速度
+    var bounce = -0.8;  // 反弹系数
+
+    // 碰撞检测
+    function checkGround(ball) {
+      if (ball.y + ball.radius > canvas.height) {
+        ball.y = canvas.height - ball.radius;
+        vy *= bounce; //速度反向并且减小
+      }
+    }
+
+    (function drawFrame() {
+      window.requestAnimationFrame(drawFrame, canvas);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      vy += gravity;
+      ball.y += vy;
+
+      checkGround(ball);
+
+      ball.draw(ctx);
+    })();
+  }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>canvas loading</title>
+</head>
+<body>
+	<canvas id="canvas" width="500" height="500"></canvas>
+	<script>
+		window.onload = function() {
+			var canvas = document.getElementById('canvas');
+			var ctx = canvas.getContext('2d');
+			var centerX = canvas.width/2;
+			var centerY = canvas.height/2;
+			// 将360度分成100分，每一分就是 rad 度
+			var rad = Math.PI * 2 / 100;
+			var speed = 0.1;
+      ctx.textBaseline = 'middle';
+      ctx.textAlign = "center";
+
+			function blueCircle(n) {
+        ctx.save();
+        ctx.strokeStyle = '#49f'; // 设置描边样式
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        // ctx.arc(x, y, r, start angle, end angle, 顺时针/逆时针)
+        ctx.arc(centerX, centerY, 100, -Math.PI/2, -Math.PI/2 + n*rad, false);
+        ctx.stroke();
+        ctx.closePath();
+        ctx.restore();      
+      }
+
+      function whiteCircle() {
+        ctx.save();
+        ctx.beginPath();
+        ctx.strokeStyle = "white";
+        ctx.arc(centerX, centerY, 100, 0, Math.PI*2, false);
+        ctx.stroke();
+        ctx.closePath();
+        ctx.restore();
+      }
+
+      function text(n) {
+        ctx.save();
+        ctx.strokeStyle = "#49f";
+        ctx.font = "40 Arial";
+        ctx.strokeText(n.toFixed(0) + '%', centerX, centerY);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      (function drawFrame() {
+        window.requestAnimationFrame(drawFrame, canvas);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        whiteCircle();
+        text(speed);
+        blueCircle(speed);
+
+        if (speed > 100) speed = 0;
+        speed += 0.1;
+      }());
+		}
+	</script>
+</body>
+</html>

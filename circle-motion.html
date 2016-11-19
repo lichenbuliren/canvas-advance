@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>circle motion</title>
+</head>
+<body>
+  <canvas id="canvas" width="500" height="500" style="background-color: #ccc"></canvas>
+  <script src="./util/util.js"></script>
+  <script src="./util/ball.js"></script>
+<script>
+  window.onload = function() {
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    var centerX = canvas.width / 2;
+    var centerY = canvas.height / 2;
+
+    var angle = 0;
+    var centerX = canvas.width/2;
+    var centerY = canvas.height/2;
+    var radius = 100;
+    var speed = 0.05;
+
+    var ball = new Ball();
+
+    (function drawFrame() {
+      window.requestAnimationFrame(drawFrame, canvas);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      util.drawAxis(canvas, 'red');
+      ball.x = centerX + Math.cos(angle)*radius;
+      ball.y = centerY + Math.sin(angle)*radius;
+      angle += speed;
+
+      ball.draw(ctx);
+    })();
+  }
+
+</script>
+</body>
+</html>

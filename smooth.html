@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>smooth motion</title>
+</head>
+<body>
+  <canvas id="canvas" width="500" height="500" style="background-color: #ccc"></canvas>
+  <script src="./util/util.js"></script>
+  <script src="./util/ball.js"></script>
+<script>
+  window.onload = function() {
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    var centerX = canvas.width / 2;
+    var centerY = canvas.height / 2;
+
+    var ball = new Ball();
+    ball.x = centerX;
+    ball.y = centerY;
+
+    var angle = 0;
+    var range = 50;
+
+    (function drawFrame() {
+      window.requestAnimationFrame(drawFrame, canvas);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ball.x = canvas.width/2 + Math.sin(angle)*range;
+      angle += 0.1;
+
+      ball.draw(ctx);
+    })();
+  }
+
+</script>
+</body>
+</html>

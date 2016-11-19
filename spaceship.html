@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>space ship motion</title>
+</head>
+<body>
+  <canvas id="canvas" width="500" height="500" style="background-color: #000"></canvas>
+  <script src="./util/util.js"></script>
+  <script src="./util/spaceShip.js"></script>
+<script>
+  window.onload = function() {
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    var centerX = canvas.width / 2;
+    var centerY = canvas.height / 2;
+
+    var spaceShip = new SpaceShip();
+    spaceShip.x = canvas.width/2;
+    spaceShip.y = canvas.height/2;
+
+    var vr = 0, // 旋转角度
+        vx = 0, // x 轴速度
+        vy = 0,
+        ax = 0, // x 轴加速度
+        ay = 0,
+        angle = 0,
+        thrust = 0;
+
+    var f = 0.99; //摩擦力系数
+
+    window.addEventListener('keydown', function(event) {
+      console.log(event.keyCode);
+      switch(event.keyCode) {
+        case 37: // left
+          vr = -3;
+          vx = 0;
+          vy = 0;
+          break;
+        case 39: // right
+          vr = 3;
+          vx = 0;
+          vy = 0;
+          break;
+        case 38: //up
+          spaceShip.showFlame = true;
+          thrust = 0.5;
+          break;
+        case 40:
+          thrust = -0.02;
+          break;
+      }
+    }, false);
+
+    window.addEventListener('keyup', function(event) {
+      vr = 0;
+      thrust = 0;
+      spaceShip.showFlame = false;
+    }, false);
+
+    (function drawFrame() {
+      window.requestAnimationFrame(drawFrame, canvas);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      // 角度
+      spaceShip.rotation += vr*Math.PI/180;
+      angle = spaceShip.rotation;
+      ax = Math.cos(angle)*thrust;
+      ay = Math.sin(angle)*thrust;
+
+      vx += ax;
+      vy += ay;
+
+      vx *= f;
+      vy *= f;
+
+      spaceShip.x += vx;
+      spaceShip.y += vy;
+
+      if (spaceShip.x + spaceShip.width/2 > canvas.width) {
+        spaceShip.x = canvas.width - spaceShip.width/2;
+        vx *= -1;
+        // 掉头
+        spaceShip.rotation = Math.atan2(vy, vx);
+      } else if (spaceShip.x < spaceShip.width/2) {
+        spaceShip.x = spaceShip.width/2;
+        vx *= -1;
+        spaceShip.rotation = Math.atan2(vy, vx);
+      }
+
+      if (spaceShip.y + spaceShip.height/2 > canvas.height) {
+        spaceShip.y = canvas.height - spaceShip.height/2;
+        vy *= -1;
+        spaceShip.rotation = Math.atan2(vy, vx);
+      } else if (spaceShip.y < spaceShip.height/2) {
+        spaceShip.y = spaceShip.height/2;
+        vy *= -1;
+        spaceShip.rotation = Math.atan2(vy, vx);
+      }
+
+      spaceShip.draw(ctx);
+    })();
+  }
+
+</script>
+</body>
+</html>
