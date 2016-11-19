@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>缓动动画</title>
+</head>
+<body>
+  <canvas id="canvas" width="500" height="500" style="background-color: #ccc"></canvas>
+  <script src="./util/util.js"></script>
+  <script src="./util/ball.js"></script>
+<script>
+  window.onload = function() {
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    var centerX = canvas.width / 2;
+    var centerY = canvas.height / 2;
+    var easing = 0.05;
+    var targetX = canvas.width;
+
+    var mouse = util.captureMouse(canvas);
+
+    var ball = new Ball(20, '#f00');
+    var smallBall = new Ball(10, 'orange');
+    ball.x = smallBall.x = centerX;
+    ball.y = smallBall.x = centerY;
+
+    (function drawFrame() {
+      var stopAni = window.requestAnimationFrame(drawFrame, canvas);
+      
+      var dx = mouse.x - ball.x;
+      var dy = mouse.y - ball.y;
+
+      if(Math.sqrt(dx*dx + dy*dy) < 1) {
+        ball.x = mouse.x;
+        ball.y = mouse.y;
+        window.cancelAnimationFrame(stopAni);
+      } else {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        vx = (mouse.x - ball.x)*easing;
+        vy = (mouse.y - ball.y)*easing;
+        ball.x += vx;
+        ball.y += vy;
+
+        vx2 = (ball.x - smallBall.x)*easing;
+        vy2 = (ball.y - smallBall.y)*easing;
+        smallBall.x += vx2;
+        smallBall.y += vy2;
+      }
+      
+      smallBall.draw(ctx);
+      ball.draw(ctx);
+    })();
+  }
+
+</script>
+</body>
+</html>

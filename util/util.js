@@ -91,6 +91,11 @@ window.util.drawAxis = function(canvas, color) {
   ctx.restore();
 }
 
+// 判断当前点是否在图形内
+window.util.containsPoint = function(rect, x, y) {
+  return !(x < rect.x || x > rect.x + rect.width || y < rect.y || y > rect.y + rect.height);
+}
+
 //动画循环 
 if (!window.requestAnimationFrame) { 
   window.requestAnimationFrame =  

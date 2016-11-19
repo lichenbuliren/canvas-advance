@@ -29,4 +29,14 @@ Ball.prototype.draw = function(ctx) {
   ctx.fill();
   ctx.stroke();
   ctx.restore();
+}
+
+// 获取小球基准信息，包括左上角的坐标 x,y; 小球大小 widht, height
+Ball.prototype.getBounds = function() {
+  return {
+    x: this.x - this.radius,
+    y: this.y - this.radius,
+    width: this.radius*2,
+    height: this.radius*2
+  }
 };
