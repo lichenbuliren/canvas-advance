@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>拖拽小球</title>
+</head>
+<body>
+  <canvas id="canvas" width="500" height="500" style="background-color: #ccc"></canvas>
+  <script src="./util/util.js"></script>
+  <script src="./util/ball.js"></script>
+<script>
+  window.onload = function() {
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    var centerX = canvas.width / 2;
+    var centerY = canvas.height / 2;
+
+    var mouse = util.captureMouse(canvas);
+
+    var ball = new Ball(20, '#f00');
+    ball.x = centerX;
+    ball.y = centerY;
+
+    canvas.addEventListener('mousedown', function() {
+      if (util.containsPoint(ball.getBounds(), mouse.x, mouse.y)) {
+
+        // 变量w和h,这两个变量的作用是修正ball的位置的。
+        w = mouse.x - ball.x;
+        h = mouse.y - ball.y;
+
+        canvas.addEventListener('mouseup', handleMouseUp, false);
+        canvas.addEventListener('mousemove', handleMouseMove, false);
+      }
+    }, false);
+
+    function handleMouseUp() {
+      canvas.removeEventListener('mouseup', handleMouseUp, false);
+      canvas.removeEventListener('mousemove', handleMouseMove, false);
+    }
+
+    function handleMouseMove(e) {
+      ball.x = mouse.x - w;
+      ball.y = mouse.y - h;
+    }
+
+    (function drawFrame() {
+      window.requestAnimationFrame(drawFrame, canvas);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ball.draw(ctx);
+    })();
+  }
+
+</script>
+</body>
+</html>
